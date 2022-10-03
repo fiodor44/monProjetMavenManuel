@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+
+    <Properties>
+        <Property name="log-level">${env:LOG_LEVEL:-INFO}</Property>
+        <Property name="log-pattern">%d [%t] [tiensVoilaUneLog,%X{X-B3-TraceId},%X{X-B3-SpanId},%X{X-Span-Export}] %-5p %c - %m%n</Property>
+    </Properties>
+    <Appenders>
+
+        <!-- ******************************************************************
+            Définition des appenders  applicatifs
+        *********************************************************************-->
+
+        <Console name="consoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${log-pattern}"/>
+        </Console>
+        <File name="file" fileName="logs.txt">
+            <PatternLayout pattern="${log-pattern}"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+
+        <!-- ***********************************************************************
+            definition des loggers Applicatifs
+        *********************************************************************-->
+        <Logger name="fr.su" level="${log-level}" additivity="false">
+            <AppenderRef ref="consoleAppender"/>
+            <AppenderRef ref="file"/>
+        </Logger>
+        <Logger name="org.apache.logging.log4j" level="${log-level}" additivity="false">
+            <AppenderRef ref="consoleAppender"/>
+            <AppenderRef ref="file"/>
+        </Logger>
+
+        <!-- ***********************************************************************
+            definition du root pour ne pas perdre de logs
+        *********************************************************************-->
+        <Root level="${log-level}">
+            <AppenderRef ref="consoleAppender"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>
